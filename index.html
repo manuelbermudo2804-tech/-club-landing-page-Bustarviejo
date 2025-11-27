@@ -12,9 +12,6 @@
         .header img { width: 100px; height: 100px; border-radius: 50%; box-shadow: 0 4px 15px rgba(0,0,0,0.2); object-fit: cover; }
         .header h1 { background: linear-gradient(to right, #ea580c, #16a34a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2rem; margin-top: 15px; }
         .header p { color: #64748b; margin-top: 8px; }
-        .stats { background: linear-gradient(to right, #f97316, #16a34a); border-radius: 16px; padding: 3px; margin: 20px 0; }
-        .stats-inner { background: white; border-radius: 14px; padding: 20px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 15px; }
-        .stats-inner span { font-size: 2rem; font-weight: bold; color: #1e293b; }
         .benefits { background: linear-gradient(135deg, #ecfdf5 0%, #fff7ed 100%); border-radius: 20px; padding: 25px; margin: 20px 0; }
         .benefits h3 { display: flex; align-items: center; gap: 8px; margin-bottom: 15px; color: #1e293b; }
         .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
@@ -43,9 +40,6 @@
         .bank-details { background: white; border-radius: 10px; padding: 15px; margin-top: 15px; }
         .bank-details .iban { font-family: monospace; font-size: 1.1rem; background: #f1f5f9; padding: 10px; border-radius: 8px; text-align: center; }
         .bank-details .concept { margin-top: 10px; font-size: 0.9rem; color: #475569; }
-        .checkbox-group { display: flex; align-items: flex-start; gap: 12px; padding: 15px; background: #fff7ed; border: 2px solid #fed7aa; border-radius: 12px; margin: 15px 0; }
-        .checkbox-group input { width: 20px; height: 20px; margin-top: 2px; }
-        .checkbox-group label { font-size: 0.9rem; color: #9a3412; }
         .submit-btn { width: 100%; padding: 18px; background: linear-gradient(to right, #ea580c, #16a34a); color: white; border: none; border-radius: 14px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
         .submit-btn:hover { transform: scale(1.02); box-shadow: 0 10px 30px rgba(234, 88, 12, 0.3); }
         .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
@@ -60,6 +54,13 @@
         @keyframes spin { to { transform: rotate(360deg); } }
         .error-message { background: #fef2f2; border: 2px solid #fecaca; color: #dc2626; padding: 15px; border-radius: 10px; margin: 15px 0; display: none; }
         .error-message.show { display: block; }
+        .share-box { background: linear-gradient(to right, #16a34a, #22c55e); border-radius: 16px; padding: 20px; margin: 20px 0; text-align: center; color: white; }
+        .share-box h3 { margin-bottom: 10px; }
+        .share-box p { font-size: 0.9rem; margin-bottom: 15px; opacity: 0.9; }
+        .share-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 25px; background: white; color: #16a34a; border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: transform 0.2s; }
+        .share-btn:hover { transform: scale(1.05); }
+        .referral-banner { background: linear-gradient(to right, #7c3aed, #a855f7); border-radius: 12px; padding: 15px; margin: 15px 0; color: white; text-align: center; }
+        .referral-banner p { font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -70,18 +71,6 @@
             <div style="font-size: 2rem; margin: 10px 0;">🎉 ⚽ 🏀 🎉</div>
             <h1>¡Hazte Socio del CD Bustarviejo!</h1>
             <p>Forma parte de nuestra gran familia deportiva</p>
-        </div>
-
-        <!-- Stats -->
-        <div class="stats">
-            <div class="stats-inner">
-                <span>👥</span>
-                <div>
-                    <span id="totalSocios">--</span>
-                    <p style="color: #64748b; font-size: 0.9rem;">socios esta temporada</p>
-                </div>
-                <span>❤️</span>
-            </div>
         </div>
 
         <!-- Benefits -->
@@ -107,6 +96,15 @@
             </div>
         </div>
 
+        <!-- Share Box -->
+        <div class="share-box">
+            <h3>🤝 ¿Conoces a más personas que quieran apoyar al club?</h3>
+            <p>¡Comparte este enlace con familiares y amigos!</p>
+            <button class="share-btn" onclick="shareLink()">
+                💬 Compartir por WhatsApp
+            </button>
+        </div>
+
         <!-- Form -->
         <div class="form-card">
             <div class="form-header">
@@ -115,8 +113,15 @@
             <div class="form-body">
                 <div class="error-message" id="errorMessage"></div>
                 
+                <!-- Referral Banner (only shows if coming from ref link) -->
+                <div class="referral-banner" id="referralBanner" style="display: none;">
+                    <p>🎁 <strong>¡Te han invitado!</strong> Al registrarte, quien te invitó recibirá un premio.</p>
+                </div>
+                
                 <div class="form-content" id="formContent">
                     <form id="memberForm">
+                        <input type="hidden" name="referido_codigo" id="referidoCodigo" value="">
+                        
                         <!-- Tipo inscripción -->
                         <div class="form-group">
                             <label>Tipo de Inscripción *</label>
@@ -136,15 +141,6 @@
                                     </div>
                                 </label>
                             </div>
-                        </div>
-
-                        <!-- Segundo progenitor -->
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="es_segundo_progenitor" name="es_segundo_progenitor">
-                            <label for="es_segundo_progenitor">
-                                <strong>👫 Soy el segundo progenitor de un jugador inscrito</strong><br>
-                                <span style="font-size: 0.8rem;">Marca esta casilla si el jugador ya ha sido inscrito por otro tutor</span>
-                            </label>
                         </div>
 
                         <!-- Datos personales -->
@@ -182,49 +178,16 @@
                             <input type="text" name="municipio" placeholder="Bustarviejo" required>
                         </div>
 
-                        <!-- Referido -->
-                        <div class="checkbox-group" style="background: #faf5ff; border-color: #e9d5ff;">
-                            <span style="font-size: 1.5rem;">🎁</span>
-                            <div style="flex: 1;">
-                                <label for="referido_por" style="color: #7c3aed; margin-bottom: 8px; display: block;">
-                                    <strong>¿Quién te ha invitado a hacerte socio?</strong>
-                                </label>
-                                <input type="text" name="referido_por" id="referido_por" placeholder="Nombre de quien te invitó (opcional)" style="width: 100%; padding: 10px; border: 1px solid #e9d5ff; border-radius: 8px;">
-                            </div>
-                        </div>
-
                         <!-- Pago -->
                         <div class="payment-box">
                             <h3>💳 Pago: 25€</h3>
                             
-                            <div class="form-group">
-                                <label>Método de Pago *</label>
-                                <div class="radio-group">
-                                    <label class="radio-option selected">
-                                        <input type="radio" name="metodo_pago" value="Transferencia" checked>
-                                        <div class="radio-content">
-                                            <h4>🏦 Transferencia Bancaria</h4>
-                                        </div>
-                                    </label>
-                                    <label class="radio-option" id="bizumOption" style="display: none;">
-                                        <input type="radio" name="metodo_pago" value="Bizum">
-                                        <div class="radio-content">
-                                            <h4>📱 Bizum</h4>
-                                        </div>
-                                    </label>
-                                </div>
-                            </div>
+                            <p style="font-size: 0.9rem; color: #166534; margin-bottom: 15px;">Realiza el pago por transferencia bancaria:</p>
 
-                            <div class="bank-details" id="bankDetails">
+                            <div class="bank-details">
                                 <p style="font-weight: 600; margin-bottom: 8px;">📋 Datos bancarios:</p>
                                 <div class="iban">ES12 1234 5678 1234 5678 9012</div>
                                 <p class="concept"><strong>Concepto:</strong> SOCIO - <span id="conceptName">Tu nombre</span></p>
-                            </div>
-
-                            <div class="bank-details" id="bizumDetails" style="display: none;">
-                                <p style="font-weight: 600; margin-bottom: 8px;">📱 Bizum al teléfono:</p>
-                                <div class="iban" id="bizumPhone" style="color: #16a34a; font-size: 1.5rem;">---</div>
-                                <p class="concept"><strong>Concepto:</strong> SOCIO - <span id="conceptNameBizum">Tu nombre</span></p>
                             </div>
                         </div>
 
@@ -242,6 +205,13 @@
                     <p>Tu solicitud se ha enviado correctamente.</p>
                     <p style="margin-top: 15px;">Recibirás tu <strong>carnet virtual</strong> por email en unos minutos.</p>
                     <p style="margin-top: 20px; font-size: 0.9rem; color: #94a3b8;">Número de socio: <strong id="numeroSocio">---</strong></p>
+                    
+                    <div style="margin-top: 30px; padding: 20px; background: #ecfdf5; border-radius: 12px;">
+                        <p style="color: #166534; font-weight: 600; margin-bottom: 10px;">🤝 ¿Conoces a más personas?</p>
+                        <button class="share-btn" onclick="shareLink()" style="background: #16a34a; color: white;">
+                            💬 Compartir por WhatsApp
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -255,7 +225,29 @@
 
     <script>
         const API_URL = 'https://api.base44.com/v1/apps/6911b8e453ca3ac01fb134d6/functions/publicMemberRegistration';
+        const LANDING_URL = 'https://manuelbermudo2804-tech.github.io/-club-landing-page-Bustarviejo/';
         
+        // Check for referral code in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const refCode = urlParams.get('ref');
+        if (refCode) {
+            document.getElementById('referidoCodigo').value = refCode;
+            document.getElementById('referralBanner').style.display = 'block';
+        }
+
+        // Share function - always shares generic link (no referral)
+        function shareLink() {
+            const message = `¡Hazte socio del CD Bustarviejo! ⚽🏀
+
+Por solo 25€/temporada ayudas a los jóvenes deportistas del club.
+
+👉 Regístrate aquí: ${LANDING_URL}
+
+¡Gracias por tu apoyo! 💪`;
+            
+            window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
         // Radio option styling
         document.querySelectorAll('.radio-option').forEach(option => {
             option.addEventListener('click', function() {
@@ -263,20 +255,12 @@
                 group.querySelectorAll('.radio-option').forEach(o => o.classList.remove('selected'));
                 this.classList.add('selected');
                 this.querySelector('input').checked = true;
-                
-                // Toggle bank/bizum details
-                if (this.querySelector('input').name === 'metodo_pago') {
-                    const value = this.querySelector('input').value;
-                    document.getElementById('bankDetails').style.display = value === 'Transferencia' ? 'block' : 'none';
-                    document.getElementById('bizumDetails').style.display = value === 'Bizum' ? 'block' : 'none';
-                }
             });
         });
 
         // Update concept name as user types
         document.querySelector('input[name="nombre_completo"]').addEventListener('input', function() {
             document.getElementById('conceptName').textContent = this.value || 'Tu nombre';
-            document.getElementById('conceptNameBizum').textContent = this.value || 'Tu nombre';
         });
 
         // Form submission
@@ -299,9 +283,9 @@
                 email: formData.get('email'),
                 direccion: formData.get('direccion'),
                 municipio: formData.get('municipio'),
-                metodo_pago: formData.get('metodo_pago'),
-                es_segundo_progenitor: formData.get('es_segundo_progenitor') === 'on',
-                referido_por: formData.get('referido_por') || ''
+                metodo_pago: 'Transferencia',
+                es_segundo_progenitor: false,
+                referido_por: formData.get('referido_codigo') ? 'REF:' + formData.get('referido_codigo') : ''
             };
 
             try {
