@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hazte Socio - CD Bustarviejo</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); min-height: 100vh; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        .header { text-align: center; padding: 30px 0; }
+        .header img { width: 100px; height: 100px; border-radius: 50%; box-shadow: 0 4px 15px rgba(0,0,0,0.2); object-fit: cover; }
+        .header h1 { background: linear-gradient(to right, #ea580c, #16a34a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2rem; margin-top: 15px; }
+        .header p { color: #64748b; margin-top: 8px; }
+        .stats { background: linear-gradient(to right, #f97316, #16a34a); border-radius: 16px; padding: 3px; margin: 20px 0; }
+        .stats-inner { background: white; border-radius: 14px; padding: 20px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 15px; }
+        .stats-inner span { font-size: 2rem; font-weight: bold; color: #1e293b; }
+        .benefits { background: linear-gradient(135deg, #ecfdf5 0%, #fff7ed 100%); border-radius: 20px; padding: 25px; margin: 20px 0; }
+        .benefits h3 { display: flex; align-items: center; gap: 8px; margin-bottom: 15px; color: #1e293b; }
+        .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+        .benefit-item { background: white; border-radius: 12px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .benefit-item h4 { font-size: 0.95rem; color: #1e293b; margin-bottom: 5px; }
+        .benefit-item p { font-size: 0.8rem; color: #64748b; }
+        .form-card { background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); overflow: hidden; margin: 20px 0; }
+        .form-header { background: linear-gradient(to right, #ea580c, #16a34a); color: white; padding: 20px; }
+        .form-header h2 { display: flex; align-items: center; gap: 10px; font-size: 1.3rem; }
+        .form-body { padding: 25px; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-weight: 600; color: #1e293b; margin-bottom: 6px; font-size: 0.9rem; }
+        .form-group input, .form-group select { width: 100%; padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 1rem; transition: border-color 0.2s; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: #f97316; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+        .radio-group { display: flex; flex-direction: column; gap: 10px; }
+        .radio-option { display: flex; align-items: center; gap: 12px; padding: 15px; background: linear-gradient(to right, #ecfdf5, #f0fdf4); border: 2px solid #bbf7d0; border-radius: 12px; cursor: pointer; transition: all 0.2s; }
+        .radio-option:hover { border-color: #22c55e; }
+        .radio-option.selected { border-color: #16a34a; background: linear-gradient(to right, #dcfce7, #d1fae5); }
+        .radio-option input { width: 20px; height: 20px; }
+        .radio-option .radio-content h4 { font-size: 0.95rem; color: #1e293b; }
+        .radio-option .radio-content p { font-size: 0.8rem; color: #64748b; }
+        .payment-box { border: 2px solid #bbf7d0; background: linear-gradient(135deg, #ecfdf5, #f0fdf4); border-radius: 16px; padding: 20px; margin: 20px 0; }
+        .payment-box h3 { display: flex; align-items: center; gap: 10px; color: #166534; font-size: 1.2rem; margin-bottom: 15px; }
+        .bank-details { background: white; border-radius: 10px; padding: 15px; margin-top: 15px; }
+        .bank-details .iban { font-family: monospace; font-size: 1.1rem; background: #f1f5f9; padding: 10px; border-radius: 8px; text-align: center; }
+        .bank-details .concept { margin-top: 10px; font-size: 0.9rem; color: #475569; }
+        .checkbox-group { display: flex; align-items: flex-start; gap: 12px; padding: 15px; background: #fff7ed; border: 2px solid #fed7aa; border-radius: 12px; margin: 15px 0; }
+        .checkbox-group input { width: 20px; height: 20px; margin-top: 2px; }
+        .checkbox-group label { font-size: 0.9rem; color: #9a3412; }
+        .submit-btn { width: 100%; padding: 18px; background: linear-gradient(to right, #ea580c, #16a34a); color: white; border: none; border-radius: 14px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+        .submit-btn:hover { transform: scale(1.02); box-shadow: 0 10px 30px rgba(234, 88, 12, 0.3); }
+        .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+        .success-message { display: none; text-align: center; padding: 40px; }
+        .success-message.show { display: block; }
+        .success-message h2 { color: #16a34a; font-size: 2rem; margin-bottom: 15px; }
+        .success-message p { color: #64748b; font-size: 1.1rem; }
+        .form-content.hidden { display: none; }
+        .footer { text-align: center; padding: 30px; color: #64748b; font-size: 0.9rem; }
+        .footer a { color: #ea580c; text-decoration: none; }
+        .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: white; animation: spin 1s linear infinite; margin-right: 10px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .error-message { background: #fef2f2; border: 2px solid #fecaca; color: #dc2626; padding: 15px; border-radius: 10px; margin: 15px 0; display: none; }
+        .error-message.show { display: block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6911b8e453ca3ac01fb134d6/e3f0a8e26_logo_cd_bustarviejo_mediano.jpg" alt="CD Bustarviejo">
+            <div style="font-size: 2rem; margin: 10px 0;">🎉 ⚽ 🏀 🎉</div>
+            <h1>¡Hazte Socio del CD Bustarviejo!</h1>
+            <p>Forma parte de nuestra gran familia deportiva</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stats-inner">
+                <span>👥</span>
+                <div>
+                    <span id="totalSocios">--</span>
+                    <p style="color: #64748b; font-size: 0.9rem;">socios esta temporada</p>
+                </div>
+                <span>❤️</span>
+            </div>
+        </div>
+
+        <!-- Benefits -->
+        <div class="benefits">
+            <h3>⭐ ¿Por qué ser socio?</h3>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <h4>💚 Apoyo esencial al club</h4>
+                    <p>Tu aportación es vital para el desarrollo de nuestros jóvenes deportistas</p>
+                </div>
+                <div class="benefit-item">
+                    <h4>👥 Fuerza para la comunidad</h4>
+                    <p>Únete a la gran familia del club y vive la pasión por el deporte</p>
+                </div>
+                <div class="benefit-item">
+                    <h4>🎉 Eventos inolvidables</h4>
+                    <p>Participa en las actividades del club y comparte experiencias únicas</p>
+                </div>
+                <div class="benefit-item">
+                    <h4>✨ Compromiso con el deporte base</h4>
+                    <p>Contribuye al crecimiento y formación de nuestros deportistas</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <div class="form-card">
+            <div class="form-header">
+                <h2>👥 Formulario de Inscripción como Socio</h2>
+            </div>
+            <div class="form-body">
+                <div class="error-message" id="errorMessage"></div>
+                
+                <div class="form-content" id="formContent">
+                    <form id="memberForm">
+                        <!-- Tipo inscripción -->
+                        <div class="form-group">
+                            <label>Tipo de Inscripción *</label>
+                            <div class="radio-group">
+                                <label class="radio-option selected">
+                                    <input type="radio" name="tipo_inscripcion" value="Nueva Inscripción" checked>
+                                    <div class="radio-content">
+                                        <h4>🆕 Nueva Inscripción</h4>
+                                        <p>Primera vez como socio del club</p>
+                                    </div>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="tipo_inscripcion" value="Renovación">
+                                    <div class="radio-content">
+                                        <h4>🔄 Renovación</h4>
+                                        <p>Ya fui socio en temporadas anteriores</p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Segundo progenitor -->
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="es_segundo_progenitor" name="es_segundo_progenitor">
+                            <label for="es_segundo_progenitor">
+                                <strong>👫 Soy el segundo progenitor de un jugador inscrito</strong><br>
+                                <span style="font-size: 0.8rem;">Marca esta casilla si el jugador ya ha sido inscrito por otro tutor</span>
+                            </label>
+                        </div>
+
+                        <!-- Datos personales -->
+                        <h3 style="margin: 25px 0 15px; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">Datos del nuevo socio</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Nombre y Apellidos *</label>
+                                <input type="text" name="nombre_completo" placeholder="Ej: Juan García López" required>
+                            </div>
+                            <div class="form-group">
+                                <label>DNI *</label>
+                                <input type="text" name="dni" placeholder="12345678A" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Teléfono Móvil *</label>
+                                <input type="tel" name="telefono" placeholder="600123456" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Correo Electrónico *</label>
+                                <input type="email" name="email" placeholder="correo@ejemplo.com" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Dirección Completa *</label>
+                            <input type="text" name="direccion" placeholder="Calle, número, piso..." required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Municipio *</label>
+                            <input type="text" name="municipio" placeholder="Bustarviejo" required>
+                        </div>
+
+                        <!-- Referido -->
+                        <div class="checkbox-group" style="background: #faf5ff; border-color: #e9d5ff;">
+                            <span style="font-size: 1.5rem;">🎁</span>
+                            <div style="flex: 1;">
+                                <label for="referido_por" style="color: #7c3aed; margin-bottom: 8px; display: block;">
+                                    <strong>¿Quién te ha invitado a hacerte socio?</strong>
+                                </label>
+                                <input type="text" name="referido_por" id="referido_por" placeholder="Nombre de quien te invitó (opcional)" style="width: 100%; padding: 10px; border: 1px solid #e9d5ff; border-radius: 8px;">
+                            </div>
+                        </div>
+
+                        <!-- Pago -->
+                        <div class="payment-box">
+                            <h3>💳 Pago: 25€</h3>
+                            
+                            <div class="form-group">
+                                <label>Método de Pago *</label>
+                                <div class="radio-group">
+                                    <label class="radio-option selected">
+                                        <input type="radio" name="metodo_pago" value="Transferencia" checked>
+                                        <div class="radio-content">
+                                            <h4>🏦 Transferencia Bancaria</h4>
+                                        </div>
+                                    </label>
+                                    <label class="radio-option" id="bizumOption" style="display: none;">
+                                        <input type="radio" name="metodo_pago" value="Bizum">
+                                        <div class="radio-content">
+                                            <h4>📱 Bizum</h4>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="bank-details" id="bankDetails">
+                                <p style="font-weight: 600; margin-bottom: 8px;">📋 Datos bancarios:</p>
+                                <div class="iban">ES12 1234 5678 1234 5678 9012</div>
+                                <p class="concept"><strong>Concepto:</strong> SOCIO - <span id="conceptName">Tu nombre</span></p>
+                            </div>
+
+                            <div class="bank-details" id="bizumDetails" style="display: none;">
+                                <p style="font-weight: 600; margin-bottom: 8px;">📱 Bizum al teléfono:</p>
+                                <div class="iban" id="bizumPhone" style="color: #16a34a; font-size: 1.5rem;">---</div>
+                                <p class="concept"><strong>Concepto:</strong> SOCIO - <span id="conceptNameBizum">Tu nombre</span></p>
+                            </div>
+                        </div>
+
+                        <!-- Submit -->
+                        <button type="submit" class="submit-btn" id="submitBtn">
+                            🎉 Enviar Solicitud
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Success message -->
+                <div class="success-message" id="successMessage">
+                    <div style="font-size: 5rem; margin-bottom: 20px;">🎉</div>
+                    <h2>¡Bienvenido/a a la familia!</h2>
+                    <p>Tu solicitud se ha enviado correctamente.</p>
+                    <p style="margin-top: 15px;">Recibirás tu <strong>carnet virtual</strong> por email en unos minutos.</p>
+                    <p style="margin-top: 20px; font-size: 0.9rem; color: #94a3b8;">Número de socio: <strong id="numeroSocio">---</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>📧 <a href__="mailto:cdbustarviejo@gmail.com">cdbustarviejo@gmail.com</a></p>
+            <p style="margin-top: 10px;">© CD Bustarviejo - Desde 1980</p>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://api.base44.com/v1/apps/6911b8e453ca3ac01fb134d6/functions/publicMemberRegistration';
+        
+        // Radio option styling
+        document.querySelectorAll('.radio-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const group = this.closest('.radio-group');
+                group.querySelectorAll('.radio-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                this.querySelector('input').checked = true;
+                
+                // Toggle bank/bizum details
+                if (this.querySelector('input').name === 'metodo_pago') {
+                    const value = this.querySelector('input').value;
+                    document.getElementById('bankDetails').style.display = value === 'Transferencia' ? 'block' : 'none';
+                    document.getElementById('bizumDetails').style.display = value === 'Bizum' ? 'block' : 'none';
+                }
+            });
+        });
+
+        // Update concept name as user types
+        document.querySelector('input[name="nombre_completo"]').addEventListener('input', function() {
+            document.getElementById('conceptName').textContent = this.value || 'Tu nombre';
+            document.getElementById('conceptNameBizum').textContent = this.value || 'Tu nombre';
+        });
+
+        // Form submission
+        document.getElementById('memberForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('submitBtn');
+            const errorDiv = document.getElementById('errorMessage');
+            
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span> Enviando...';
+            errorDiv.classList.remove('show');
+
+            const formData = new FormData(this);
+            const data = {
+                tipo_inscripcion: formData.get('tipo_inscripcion'),
+                nombre_completo: formData.get('nombre_completo'),
+                dni: formData.get('dni'),
+                telefono: formData.get('telefono'),
+                email: formData.get('email'),
+                direccion: formData.get('direccion'),
+                municipio: formData.get('municipio'),
+                metodo_pago: formData.get('metodo_pago'),
+                es_segundo_progenitor: formData.get('es_segundo_progenitor') === 'on',
+                referido_por: formData.get('referido_por') || ''
+            };
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    document.getElementById('formContent').classList.add('hidden');
+                    document.getElementById('successMessage').classList.add('show');
+                    document.getElementById('numeroSocio').textContent = result.numero_socio;
+                } else {
+                    throw new Error(result.error || 'Error al procesar la solicitud');
+                }
+            } catch (error) {
+                errorDiv.textContent = '❌ ' + error.message;
+                errorDiv.classList.add('show');
+                btn.disabled = false;
+                btn.innerHTML = '🎉 Enviar Solicitud';
+            }
+        });
+    </script>
+</body>
+</html>
