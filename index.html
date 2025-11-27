@@ -10,7 +10,7 @@
         .container { max-width: 800px; margin: 0 auto; padding: 20px; }
         .header { text-align: center; padding: 30px 0; }
         .header img { width: 100px; height: 100px; border-radius: 50%; box-shadow: 0 4px 15px rgba(0,0,0,0.2); object-fit: cover; }
-        .header h1 { background: linear-gradient(to right, #ea580c, #16a34a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2rem; margin-top: 15px; }
+        .header h1 { background: linear-gradient(to right, #ea580c, #16a34a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 2rem; margin-top: 15px; }
         .header p { color: #64748b; margin-top: 8px; }
         .benefits { background: linear-gradient(135deg, #ecfdf5 0%, #fff7ed 100%); border-radius: 20px; padding: 25px; margin: 20px 0; }
         .benefits h3 { display: flex; align-items: center; gap: 8px; margin-bottom: 15px; color: #1e293b; }
@@ -24,25 +24,30 @@
         .form-body { padding: 25px; }
         .form-group { margin-bottom: 18px; }
         .form-group label { display: block; font-weight: 600; color: #1e293b; margin-bottom: 6px; font-size: 0.9rem; }
-        .form-group input, .form-group select { width: 100%; padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 1rem; transition: border-color 0.2s; }
+        .form-group input, .form-group select { width: 100%; padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 16px; transition: border-color 0.2s; background: white; color: #1e293b; }
         .form-group input:focus, .form-group select:focus { outline: none; border-color: #f97316; }
+        .form-group input::placeholder { color: #94a3b8; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
         .radio-group { display: flex; flex-direction: column; gap: 10px; }
         .radio-option { display: flex; align-items: center; gap: 12px; padding: 15px; background: linear-gradient(to right, #ecfdf5, #f0fdf4); border: 2px solid #bbf7d0; border-radius: 12px; cursor: pointer; transition: all 0.2s; }
         .radio-option:hover { border-color: #22c55e; }
         .radio-option.selected { border-color: #16a34a; background: linear-gradient(to right, #dcfce7, #d1fae5); }
-        .radio-option input { width: 20px; height: 20px; }
+        .radio-option input { width: 20px; height: 20px; accent-color: #16a34a; }
         .radio-option .radio-content h4 { font-size: 0.95rem; color: #1e293b; }
         .radio-option .radio-content p { font-size: 0.8rem; color: #64748b; }
         .payment-box { border: 2px solid #bbf7d0; background: linear-gradient(135deg, #ecfdf5, #f0fdf4); border-radius: 16px; padding: 20px; margin: 20px 0; }
         .payment-box h3 { display: flex; align-items: center; gap: 10px; color: #166534; font-size: 1.2rem; margin-bottom: 15px; }
         .bank-details { background: white; border-radius: 10px; padding: 15px; margin-top: 15px; }
-        .bank-details .iban { font-family: monospace; font-size: 1.1rem; background: #f1f5f9; padding: 10px; border-radius: 8px; text-align: center; }
+        .bank-details .iban { font-family: monospace; font-size: 1.1rem; background: #f1f5f9; padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; position: relative; transition: background 0.2s; }
+        .bank-details .iban:hover { background: #e2e8f0; }
         .bank-details .concept { margin-top: 10px; font-size: 0.9rem; color: #475569; }
+        .copy-toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #166534; color: white; padding: 12px 25px; border-radius: 10px; font-weight: bold; display: none; z-index: 9999; animation: fadeInUp 0.3s ease; }
+        .copy-toast.show { display: block; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
         .submit-btn { width: 100%; padding: 18px; background: linear-gradient(to right, #ea580c, #16a34a); color: white; border: none; border-radius: 14px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
-        .submit-btn:hover { transform: scale(1.02); box-shadow: 0 10px 30px rgba(234, 88, 12, 0.3); }
-        .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+        .submit-btn:hover:not(:disabled) { transform: scale(1.02); box-shadow: 0 10px 30px rgba(234, 88, 12, 0.3); }
+        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; background: #94a3b8; }
         .success-message { display: none; text-align: center; padding: 40px; }
         .success-message.show { display: block; }
         .success-message h2 { color: #16a34a; font-size: 2rem; margin-bottom: 15px; }
@@ -61,9 +66,37 @@
         .share-btn:hover { transform: scale(1.05); }
         .referral-banner { background: linear-gradient(to right, #7c3aed, #a855f7); border-radius: 12px; padding: 15px; margin: 15px 0; color: white; text-align: center; }
         .referral-banner p { font-size: 0.9rem; }
+        .upload-section { margin-top: 20px; padding: 20px; background: #fffbeb; border: 2px dashed #f59e0b; border-radius: 12px; text-align: center; }
+        .upload-section.uploaded { background: #ecfdf5; border-color: #16a34a; border-style: solid; }
+        .upload-section h4 { color: #92400e; margin-bottom: 10px; }
+        .upload-section.uploaded h4 { color: #166534; }
+        .upload-section p { font-size: 0.85rem; color: #a16207; margin-bottom: 15px; }
+        .upload-section.uploaded p { color: #166534; }
+        .upload-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 25px; background: #f59e0b; color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: all 0.2s; }
+        .upload-btn:hover { background: #d97706; transform: scale(1.02); }
+        .upload-btn.success { background: #16a34a; }
+        .upload-btn:disabled { opacity: 0.7; cursor: wait; }
+        .file-input { display: none; }
+        .upload-preview { margin-top: 15px; padding: 10px; background: white; border-radius: 8px; display: none; }
+        .upload-preview.show { display: flex; align-items: center; gap: 10px; justify-content: center; }
+        .upload-preview span { color: #166534; font-weight: 600; font-size: 0.9rem; }
+        .bizum-box { margin-top: 15px; padding: 12px; background: #ecfdf5; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: background 0.2s; }
+        .bizum-box:hover { background: #dcfce7; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-overlay.show { display: flex; }
+        .modal-content { background: white; border-radius: 20px; padding: 30px; max-width: 400px; width: 100%; text-align: center; animation: modalIn 0.3s ease; }
+        @keyframes modalIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-content .checkmark { width: 80px; height: 80px; background: linear-gradient(135deg, #16a34a, #22c55e); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+        .modal-content .checkmark svg { width: 40px; height: 40px; color: white; }
+        .modal-content h2 { color: #16a34a; margin-bottom: 10px; }
+        .modal-content p { color: #64748b; margin-bottom: 15px; }
+        .modal-content .close-btn { background: linear-gradient(to right, #ea580c, #16a34a); color: white; border: none; padding: 12px 30px; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 15px; }
     </style>
 </head>
 <body>
+    <!-- Copy Toast -->
+    <div class="copy-toast" id="copyToast">✅ ¡Copiado!</div>
+
     <div class="container">
         <!-- Header -->
         <div class="header">
@@ -113,14 +146,15 @@
             <div class="form-body">
                 <div class="error-message" id="errorMessage"></div>
                 
-                <!-- Referral Banner (only shows if coming from ref link) -->
+                <!-- Referral Banner -->
                 <div class="referral-banner" id="referralBanner" style="display: none;">
                     <p>🎁 <strong>¡Te han invitado!</strong> Al registrarte, quien te invitó recibirá un premio.</p>
                 </div>
                 
                 <div class="form-content" id="formContent">
-                    <form id="memberForm">
+                    <form id="memberForm" autocomplete="on">
                         <input type="hidden" name="referido_codigo" id="referidoCodigo" value="">
+                        <input type="hidden" name="justificante_url" id="justificanteUrl" value="">
                         
                         <!-- Tipo inscripción -->
                         <div class="form-group">
@@ -148,53 +182,82 @@
                         
                         <div class="form-row">
                             <div class="form-group">
-                                <label>Nombre y Apellidos *</label>
-                                <input type="text" name="nombre_completo" placeholder="Ej: Juan García López" required>
+                                <label for="nombre_completo">Nombre y Apellidos *</label>
+                                <input type="text" id="nombre_completo" name="nombre_completo" autocomplete="name" placeholder="Ej: Juan García López" required>
                             </div>
                             <div class="form-group">
-                                <label>DNI *</label>
-                                <input type="text" name="dni" placeholder="12345678A" required>
+                                <label for="dni">DNI *</label>
+                                <input type="text" id="dni" name="dni" autocomplete="off" placeholder="12345678A" required>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label>Teléfono Móvil *</label>
-                                <input type="tel" name="telefono" placeholder="600123456" required>
+                                <label for="telefono">Teléfono Móvil *</label>
+                                <input type="tel" id="telefono" name="telefono" autocomplete="tel" placeholder="600123456" required>
                             </div>
                             <div class="form-group">
-                                <label>Correo Electrónico *</label>
-                                <input type="email" name="email" placeholder="correo@ejemplo.com" required>
+                                <label for="email">Correo Electrónico *</label>
+                                <input type="email" id="email" name="email" autocomplete="email" placeholder="correo@ejemplo.com" required>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label>Dirección Completa *</label>
-                            <input type="text" name="direccion" placeholder="Calle, número, piso..." required>
+                            <label for="direccion">Dirección Completa *</label>
+                            <input type="text" id="direccion" name="direccion" autocomplete="street-address" placeholder="Calle, número, piso..." required>
                         </div>
 
                         <div class="form-group">
-                            <label>Municipio *</label>
-                            <input type="text" name="municipio" placeholder="Bustarviejo" required>
+                            <label for="municipio">Municipio *</label>
+                            <input type="text" id="municipio" name="municipio" autocomplete="address-level2" placeholder="Bustarviejo" required>
                         </div>
 
                         <!-- Pago -->
                         <div class="payment-box">
                             <h3>💳 Pago: 25€</h3>
                             
-                            <p style="font-size: 0.9rem; color: #166534; margin-bottom: 15px;">Realiza el pago por transferencia bancaria:</p>
+                            <p style="font-size: 0.9rem; color: #166534; margin-bottom: 15px;">Realiza el pago por transferencia bancaria o Bizum:</p>
 
                             <div class="bank-details">
-                                <p style="font-weight: 600; margin-bottom: 8px;">📋 Datos bancarios:</p>
-                                <div class="iban">ES12 1234 5678 1234 5678 9012</div>
+                                <p style="font-weight: 600; margin-bottom: 8px;">📋 Datos bancarios (pulsa para copiar):</p>
+                                <div class="iban" onclick="copyIBAN()">
+                                    ES12 1234 5678 1234 5678 9012
+                                    <span style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 5px;">📋 Pulsa para copiar</span>
+                                </div>
                                 <p class="concept"><strong>Concepto:</strong> SOCIO - <span id="conceptName">Tu nombre</span></p>
+                                
+                                <!-- Bizum -->
+                                <div class="bizum-box" onclick="copyBizum()">
+                                    <div>
+                                        <p style="font-size: 0.9rem; color: #166534; margin: 0;">
+                                            <strong>📱 Bizum:</strong> <span style="font-weight: bold; font-size: 1.1rem;">600 123 456</span>
+                                        </p>
+                                    </div>
+                                    <span style="font-size: 0.8rem; color: #64748b;">📋 Copiar</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Upload justificante -->
+                            <div class="upload-section" id="uploadSection">
+                                <h4>📤 Subir Justificante de Pago *</h4>
+                                <p>Obligatorio: sube una captura de tu transferencia o Bizum</p>
+                                <input type="file" id="fileInput" class="file-input" accept="image/*,.pdf">
+                                <button type="button" class="upload-btn" id="uploadBtn" onclick="document.getElementById('fileInput').click()">
+                                    📎 Seleccionar archivo
+                                </button>
+                                <div class="upload-preview" id="uploadPreview">
+                                    <span>✅ Justificante subido correctamente</span>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Submit -->
-                        <button type="submit" class="submit-btn" id="submitBtn">
+                        <button type="submit" class="submit-btn" id="submitBtn" disabled>
                             🎉 Enviar Solicitud
                         </button>
+                        <p style="text-align: center; margin-top: 10px; font-size: 0.85rem; color: #dc2626;" id="submitHint">
+                            ⚠️ Sube el justificante de pago para poder enviar
+                        </p>
                     </form>
                 </div>
 
@@ -223,10 +286,52 @@
         </div>
     </div>
 
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-content">
+            <div class="checkmark">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                </svg>
+            </div>
+            <h2>🎉 ¡Bienvenido/a!</h2>
+            <p>Tu solicitud se ha enviado correctamente.</p>
+            <p>Recibirás tu <strong>carnet virtual</strong> por email.</p>
+            <p style="margin-top: 15px; font-size: 0.9rem; color: #64748b;">Número de socio: <strong id="modalNumeroSocio">---</strong></p>
+            <button class="close-btn" onclick="closeModal()">Cerrar</button>
+        </div>
+    </div>
+
     <script>
         const API_URL = 'https://api.base44.com/v1/apps/6911b8e453ca3ac01fb134d6/functions/publicMemberRegistration';
+        const UPLOAD_URL = 'https://api.base44.com/v1/apps/6911b8e453ca3ac01fb134d6/integrations/core/upload-file';
         const LANDING_URL = 'https://manuelbermudo2804-tech.github.io/-club-landing-page-Bustarviejo/';
         
+        // ⚠️ DATOS DEL CLUB - Cambia estos valores por los reales
+        const IBAN = 'ES12 1234 5678 1234 5678 9012';
+        const BIZUM = '600123456';
+        
+        let justificanteSubido = false;
+
+        // Show copy toast
+        function showCopyToast() {
+            const toast = document.getElementById('copyToast');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        // Copy IBAN
+        function copyIBAN() {
+            navigator.clipboard.writeText(IBAN.replace(/\s/g, ''));
+            showCopyToast();
+        }
+
+        // Copy Bizum
+        function copyBizum() {
+            navigator.clipboard.writeText(BIZUM);
+            showCopyToast();
+        }
+
         // Check for referral code in URL
         const urlParams = new URLSearchParams(window.location.search);
         const refCode = urlParams.get('ref');
@@ -235,7 +340,7 @@
             document.getElementById('referralBanner').style.display = 'block';
         }
 
-        // Share function - always shares generic link (no referral)
+        // Share function
         function shareLink() {
             const message = `¡Hazte socio del CD Bustarviejo! ⚽🏀
 
@@ -246,6 +351,11 @@ Por solo 25€/temporada ayudas a los jóvenes deportistas del club.
 ¡Gracias por tu apoyo! 💪`;
             
             window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('successModal').classList.remove('show');
         }
 
         // Radio option styling
@@ -259,13 +369,67 @@ Por solo 25€/temporada ayudas a los jóvenes deportistas del club.
         });
 
         // Update concept name as user types
-        document.querySelector('input[name="nombre_completo"]').addEventListener('input', function() {
+        document.getElementById('nombre_completo').addEventListener('input', function() {
             document.getElementById('conceptName').textContent = this.value || 'Tu nombre';
+        });
+
+        // File upload handling
+        document.getElementById('fileInput').addEventListener('change', async function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const uploadBtn = document.getElementById('uploadBtn');
+            const uploadSection = document.getElementById('uploadSection');
+            const uploadPreview = document.getElementById('uploadPreview');
+            const submitBtn = document.getElementById('submitBtn');
+            const submitHint = document.getElementById('submitHint');
+
+            uploadBtn.disabled = true;
+            uploadBtn.innerHTML = '<span class="loading"></span> Subiendo...';
+
+            try {
+                const formData = new FormData();
+                formData.append('file', file);
+
+                const response = await fetch(UPLOAD_URL, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                
+                if (result.file_url) {
+                    document.getElementById('justificanteUrl').value = result.file_url;
+                    justificanteSubido = true;
+                    
+                    // Update UI
+                    uploadSection.classList.add('uploaded');
+                    uploadBtn.innerHTML = '✅ Justificante subido';
+                    uploadBtn.classList.add('success');
+                    uploadPreview.classList.add('show');
+                    
+                    // Enable submit button
+                    submitBtn.disabled = false;
+                    submitHint.style.display = 'none';
+                } else {
+                    throw new Error('Error al subir archivo');
+                }
+            } catch (error) {
+                console.error('Upload error:', error);
+                alert('❌ Error al subir el archivo. Por favor, inténtalo de nuevo.');
+                uploadBtn.disabled = false;
+                uploadBtn.innerHTML = '📎 Seleccionar archivo';
+            }
         });
 
         // Form submission
         document.getElementById('memberForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            if (!justificanteSubido) {
+                alert('⚠️ Por favor, sube el justificante de pago antes de enviar.');
+                return;
+            }
             
             const btn = document.getElementById('submitBtn');
             const errorDiv = document.getElementById('errorMessage');
@@ -284,6 +448,7 @@ Por solo 25€/temporada ayudas a los jóvenes deportistas del club.
                 direccion: formData.get('direccion'),
                 municipio: formData.get('municipio'),
                 metodo_pago: 'Transferencia',
+                justificante_url: formData.get('justificante_url'),
                 es_segundo_progenitor: false,
                 referido_por: formData.get('referido_codigo') ? 'REF:' + formData.get('referido_codigo') : ''
             };
@@ -298,14 +463,20 @@ Por solo 25€/temporada ayudas a los jóvenes deportistas del club.
                 const result = await response.json();
 
                 if (result.success) {
+                    // Show modal
+                    document.getElementById('modalNumeroSocio').textContent = result.numero_socio || 'Asignado';
+                    document.getElementById('successModal').classList.add('show');
+                    
+                    // Update inline message
                     document.getElementById('formContent').classList.add('hidden');
                     document.getElementById('successMessage').classList.add('show');
-                    document.getElementById('numeroSocio').textContent = result.numero_socio;
+                    document.getElementById('numeroSocio').textContent = result.numero_socio || 'Asignado';
                 } else {
                     throw new Error(result.error || 'Error al procesar la solicitud');
                 }
             } catch (error) {
-                errorDiv.textContent = '❌ ' + error.message;
+                console.error('Error:', error);
+                errorDiv.textContent = '❌ ' + (error.message || 'Error al enviar. Por favor, inténtalo de nuevo.');
                 errorDiv.classList.add('show');
                 btn.disabled = false;
                 btn.innerHTML = '🎉 Enviar Solicitud';
