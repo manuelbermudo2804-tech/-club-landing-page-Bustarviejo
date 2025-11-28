@@ -5,92 +5,402 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hazte Socio - CD Bustarviejo</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); min-height: 100vh; }
-        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
-        .header { text-align: center; padding: 30px 0; }
-        .header img { width: 100px; height: 100px; border-radius: 50%; box-shadow: 0 4px 15px rgba(0,0,0,0.2); object-fit: cover; }
-        .header h1 { background: linear-gradient(to right, #ea580c, #16a34a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 2rem; margin-top: 15px; }
-        .header p { color: #64748b; margin-top: 8px; }
-        .benefits { background: linear-gradient(135deg, #ecfdf5 0%, #fff7ed 100%); border-radius: 20px; padding: 25px; margin: 20px 0; }
-        .benefits h3 { display: flex; align-items: center; gap: 8px; margin-bottom: 15px; color: #1e293b; }
-        .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
-        .benefit-item { background: white; border-radius: 12px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .benefit-item h4 { font-size: 0.95rem; color: #1e293b; margin-bottom: 5px; }
-        .benefit-item p { font-size: 0.8rem; color: #64748b; }
-        .form-card { background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); overflow: hidden; margin: 20px 0; }
-        .form-header { background: linear-gradient(to right, #ea580c, #16a34a); color: white; padding: 20px; }
-        .form-header h2 { display: flex; align-items: center; gap: 10px; font-size: 1.3rem; }
-        .form-body { padding: 25px; }
-        .form-group { margin-bottom: 18px; }
-        .form-group label { display: block; font-weight: 600; color: #1e293b; margin-bottom: 6px; font-size: 0.9rem; }
-        .form-group input, .form-group select { width: 100%; padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 16px; transition: border-color 0.2s; background: white; color: #1e293b; }
-        .form-group input:focus, .form-group select:focus { outline: none; border-color: #f97316; }
-        .form-group input::placeholder { color: #94a3b8; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
-        .radio-group { display: flex; flex-direction: column; gap: 10px; }
-        .radio-option { display: flex; align-items: center; gap: 12px; padding: 15px; background: linear-gradient(to right, #ecfdf5, #f0fdf4); border: 2px solid #bbf7d0; border-radius: 12px; cursor: pointer; transition: all 0.2s; }
-        .radio-option:hover { border-color: #22c55e; }
-        .radio-option.selected { border-color: #16a34a; background: linear-gradient(to right, #dcfce7, #d1fae5); }
-        .radio-option input { width: 20px; height: 20px; accent-color: #16a34a; }
-        .radio-option .radio-content h4 { font-size: 0.95rem; color: #1e293b; }
-        .radio-option .radio-content p { font-size: 0.8rem; color: #64748b; }
-        .payment-box { border: 2px solid #bbf7d0; background: linear-gradient(135deg, #ecfdf5, #f0fdf4); border-radius: 16px; padding: 20px; margin: 20px 0; }
-        .payment-box h3 { display: flex; align-items: center; gap: 10px; color: #166534; font-size: 1.2rem; margin-bottom: 15px; }
-        .bank-details { background: white; border-radius: 10px; padding: 15px; margin-top: 15px; }
-        .bank-details .iban { font-family: monospace; font-size: 1.1rem; background: #f1f5f9; padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; position: relative; transition: background 0.2s; }
-        .bank-details .iban:hover { background: #e2e8f0; }
-        .bank-details .concept { margin-top: 10px; font-size: 0.9rem; color: #475569; }
-        .copy-toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #166534; color: white; padding: 12px 25px; border-radius: 10px; font-weight: bold; display: none; z-index: 9999; animation: fadeInUp 0.3s ease; }
-        .copy-toast.show { display: block; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
-        .submit-btn { width: 100%; padding: 18px; background: linear-gradient(to right, #ea580c, #16a34a); color: white; border: none; border-radius: 14px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
-        .submit-btn:hover:not(:disabled) { transform: scale(1.02); box-shadow: 0 10px 30px rgba(234, 88, 12, 0.3); }
-        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; background: #94a3b8; }
-        .success-message { display: none; text-align: center; padding: 40px; }
-        .success-message.show { display: block; }
-        .success-message h2 { color: #16a34a; font-size: 2rem; margin-bottom: 15px; }
-        .success-message p { color: #64748b; font-size: 1.1rem; }
-        .form-content.hidden { display: none; }
-        .footer { text-align: center; padding: 30px; color: #64748b; font-size: 0.9rem; }
-        .footer a { color: #ea580c; text-decoration: none; }
-        .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: white; animation: spin 1s linear infinite; margin-right: 10px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .error-message { background: #fef2f2; border: 2px solid #fecaca; color: #dc2626; padding: 15px; border-radius: 10px; margin: 15px 0; display: none; }
-        .error-message.show { display: block; }
-        .share-box { background: linear-gradient(to right, #16a34a, #22c55e); border-radius: 16px; padding: 20px; margin: 20px 0; text-align: center; color: white; }
-        .share-box h3 { margin-bottom: 10px; }
-        .share-box p { font-size: 0.9rem; margin-bottom: 15px; opacity: 0.9; }
-        .share-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 25px; background: white; color: #16a34a; border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: transform 0.2s; }
-        .share-btn:hover { transform: scale(1.05); }
-        .referral-banner { background: linear-gradient(to right, #7c3aed, #a855f7); border-radius: 12px; padding: 15px; margin: 15px 0; color: white; text-align: center; }
-        .referral-banner p { font-size: 0.9rem; }
-        .upload-section { margin-top: 20px; padding: 20px; background: #fffbeb; border: 2px dashed #f59e0b; border-radius: 12px; text-align: center; }
-        .upload-section.uploaded { background: #ecfdf5; border-color: #16a34a; border-style: solid; }
-        .upload-section h4 { color: #92400e; margin-bottom: 10px; }
-        .upload-section.uploaded h4 { color: #166534; }
-        .upload-section p { font-size: 0.85rem; color: #a16207; margin-bottom: 15px; }
-        .upload-section.uploaded p { color: #166534; }
-        .upload-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 25px; background: #f59e0b; color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: all 0.2s; }
-        .upload-btn:hover { background: #d97706; transform: scale(1.02); }
-        .upload-btn.success { background: #16a34a; }
-        .upload-btn:disabled { opacity: 0.7; cursor: wait; }
-        .file-input { display: none; }
-        .upload-preview { margin-top: 15px; padding: 10px; background: white; border-radius: 8px; display: none; }
-        .upload-preview.show { display: flex; align-items: center; gap: 10px; justify-content: center; }
-        .upload-preview span { color: #166534; font-weight: 600; font-size: 0.9rem; }
-        .bizum-box { margin-top: 15px; padding: 12px; background: #ecfdf5; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: background 0.2s; }
-        .bizum-box:hover { background: #dcfce7; }
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-overlay.show { display: flex; }
-        .modal-content { background: white; border-radius: 20px; padding: 30px; max-width: 400px; width: 100%; text-align: center; animation: modalIn 0.3s ease; }
-        @keyframes modalIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .modal-content .checkmark { width: 80px; height: 80px; background: linear-gradient(135deg, #16a34a, #22c55e); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
-        .modal-content .checkmark svg { width: 40px; height: 40px; color: white; }
-        .modal-content h2 { color: #16a34a; margin-bottom: 10px; }
-        .modal-content p { color: #64748b; margin-bottom: 15px; }
-        .modal-content .close-btn { background: linear-gradient(to right, #ea580c, #16a34a); color: white; border: none; padding: 12px 30px; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 15px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3a5f 0%, #0d1b2a 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            color: white;
+        }
+        .header img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 4px solid #f97316;
+            margin-bottom: 15px;
+            object-fit: cover;
+        }
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        .header p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+        .benefits {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        .benefits h3 {
+            color: #166534;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .benefit-item {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .benefit-item h4 {
+            color: #1e293b;
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+        .benefit-item p {
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+        .share-box {
+            background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: white;
+        }
+        .share-box h3 {
+            margin-bottom: 10px;
+        }
+        .share-box p {
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        .share-btn {
+            background: white;
+            color: #16a34a;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .share-btn:hover {
+            transform: scale(1.05);
+        }
+        .form-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        .form-header {
+            background: linear-gradient(135deg, #f97316 0%, #16a34a 100%);
+            padding: 20px;
+            color: white;
+        }
+        .form-header h2 {
+            font-size: 1.3rem;
+        }
+        .form-body {
+            padding: 25px;
+        }
+        .error-message {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: none;
+        }
+        .referral-banner {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            border: 2px solid #16a34a;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .referral-banner p {
+            color: #166534;
+            margin: 0;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #f97316;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .radio-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .radio-option:hover {
+            border-color: #f97316;
+        }
+        .radio-option.selected {
+            border-color: #16a34a;
+            background: #ecfdf5;
+        }
+        .radio-option input {
+            margin-top: 3px;
+        }
+        .radio-content h4 {
+            color: #1e293b;
+            font-size: 1rem;
+            margin-bottom: 3px;
+        }
+        .radio-content p {
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+        .payment-box {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            border: 2px solid #16a34a;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        .payment-box h3 {
+            color: #166534;
+            margin-bottom: 15px;
+        }
+        .bank-details {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .iban {
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 1.1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-bottom: 10px;
+        }
+        .iban:hover {
+            background: #e2e8f0;
+        }
+        .concept {
+            font-size: 0.9rem;
+            color: #475569;
+        }
+        .upload-section {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+        .upload-section h4 {
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .upload-section > p {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+        .file-input {
+            display: none;
+        }
+        .upload-btn {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .upload-btn:hover {
+            transform: scale(1.02);
+        }
+        .upload-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .upload-preview {
+            margin-top: 15px;
+            padding: 12px;
+            background: #ecfdf5;
+            border-radius: 8px;
+            color: #166534;
+            display: none;
+        }
+        .upload-error {
+            margin-top: 15px;
+            padding: 12px;
+            background: #fef2f2;
+            border-radius: 8px;
+            color: #dc2626;
+            display: none;
+        }
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #f97316 0%, #16a34a 100%);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+        }
+        .submit-btn:hover:not(:disabled) {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(249, 115, 22, 0.4);
+        }
+        .submit-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .success-message {
+            text-align: center;
+            padding: 40px 20px;
+            display: none;
+        }
+        .success-message h2 {
+            color: #166534;
+            margin-bottom: 10px;
+        }
+        .success-message p {
+            color: #475569;
+        }
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: rgba(255,255,255,0.7);
+        }
+        .footer a {
+            color: #f97316;
+            text-decoration: none;
+        }
+        .copy-toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #1e293b;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: transform 0.3s;
+            z-index: 1000;
+        }
+        .copy-toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            text-align: center;
+            animation: modalIn 0.3s ease-out;
+        }
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        .modal-content h2 {
+            color: #166534;
+            margin: 20px 0 10px;
+        }
+        .modal-content p {
+            color: #475569;
+            margin-bottom: 10px;
+        }
+        .modal-close {
+            background: linear-gradient(135deg, #f97316 0%, #16a34a 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -101,8 +411,7 @@
         <!-- Header -->
         <div class="header">
             <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6911b8e453ca3ac01fb134d6/e3f0a8e26_logo_cd_bustarviejo_mediano.jpg" alt="CD Bustarviejo">
-            <div style="font-size: 2rem; margin: 10px 0;">🎉 ⚽ 🏀 🎉</div>
-            <h1>¡Hazte Socio del CD Bustarviejo!</h1>
+            <h1>🎉 ¡Hazte Socio del CD Bustarviejo!</h1>
             <p>Forma parte de nuestra gran familia deportiva</p>
         </div>
 
@@ -133,7 +442,7 @@
         <div class="share-box">
             <h3>🤝 ¿Conoces a más personas que quieran apoyar al club?</h3>
             <p>¡Comparte este enlace con familiares y amigos!</p>
-            <button class="share-btn" onclick="shareLink()">
+            <button class="share-btn" onclick="shareWhatsApp()">
                 💬 Compartir por WhatsApp
             </button>
         </div>
@@ -153,8 +462,6 @@
                 
                 <div class="form-content" id="formContent">
                     <form id="memberForm" autocomplete="on">
-                        <input type="hidden" name="referido_codigo" id="referidoCodigo" value="">
-                        <input type="hidden" name="justificante_url" id="justificanteUrl" value="">
                         
                         <!-- Tipo inscripción -->
                         <div class="form-group">
@@ -216,7 +523,7 @@
                         <div class="payment-box">
                             <h3>💳 Pago: 25€</h3>
                             
-                            <p style="font-size: 0.9rem; color: #166534; margin-bottom: 15px;">Realiza el pago por transferencia bancaria o Bizum:</p>
+                            <p style="font-size: 0.9rem; color: #166534; margin-bottom: 15px;">Realiza el pago por transferencia bancaria:</p>
 
                             <div class="bank-details">
                                 <p style="font-weight: 600; margin-bottom: 8px;">📋 Datos bancarios (pulsa para copiar):</p>
@@ -225,28 +532,21 @@
                                     <span style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 5px;">📋 Pulsa para copiar</span>
                                 </div>
                                 <p class="concept"><strong>Concepto:</strong> SOCIO - <span id="conceptName">Tu nombre</span></p>
-                                
-                                <!-- Bizum -->
-                                <div class="bizum-box" onclick="copyBizum()">
-                                    <div>
-                                        <p style="font-size: 0.9rem; color: #166534; margin: 0;">
-                                            <strong>📱 Bizum:</strong> <span style="font-weight: bold; font-size: 1.1rem;">600 123 456</span>
-                                        </p>
-                                    </div>
-                                    <span style="font-size: 0.8rem; color: #64748b;">📋 Copiar</span>
-                                </div>
                             </div>
                             
                             <!-- Upload justificante -->
                             <div class="upload-section" id="uploadSection">
                                 <h4>📤 Subir Justificante de Pago *</h4>
-                                <p>Obligatorio: sube una captura de tu transferencia o Bizum</p>
+                                <p>Obligatorio: sube una captura de tu transferencia</p>
                                 <input type="file" id="fileInput" class="file-input" accept="image/*,.pdf">
-                                <button type="button" class="upload-btn" id="uploadBtn" onclick="document.getElementById('fileInput').click()">
+                                <button type="button" class="upload-btn" id="uploadBtn">
                                     📎 Seleccionar archivo
                                 </button>
                                 <div class="upload-preview" id="uploadPreview">
                                     <span>✅ Justificante subido correctamente</span>
+                                </div>
+                                <div class="upload-error" id="uploadError">
+                                    <span>❌ Error al subir el archivo. Inténtalo de nuevo.</span>
                                 </div>
                             </div>
                         </div>
@@ -271,7 +571,7 @@
                     
                     <div style="margin-top: 30px; padding: 20px; background: #ecfdf5; border-radius: 12px;">
                         <p style="color: #166534; font-weight: 600; margin-bottom: 10px;">🤝 ¿Conoces a más personas?</p>
-                        <button class="share-btn" onclick="shareLink()" style="background: #16a34a; color: white;">
+                        <button class="share-btn" style="background: #16a34a; color: white;" onclick="shareWhatsApp()">
                             💬 Compartir por WhatsApp
                         </button>
                     </div>
@@ -282,110 +582,106 @@
         <!-- Footer -->
         <div class="footer">
             <p>📧 <a href__="mailto:cdbustarviejo@gmail.com">cdbustarviejo@gmail.com</a></p>
-            <p style="margin-top: 10px;">© CD Bustarviejo - Desde 1980</p>
+            <p style="margin-top: 10px;">📍 Bustarviejo, Madrid</p>
+            <p style="margin-top: 15px; font-size: 0.85rem;">© CD Bustarviejo - Desde 1980</p>
         </div>
     </div>
 
     <!-- Success Modal -->
     <div class="modal-overlay" id="successModal">
         <div class="modal-content">
-            <div class="checkmark">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
-                </svg>
-            </div>
-            <h2>🎉 ¡Bienvenido/a!</h2>
+            <div style="font-size: 5rem;">🎉</div>
+            <h2>¡Bienvenido/a a la familia!</h2>
             <p>Tu solicitud se ha enviado correctamente.</p>
             <p>Recibirás tu <strong>carnet virtual</strong> por email.</p>
-            <p style="margin-top: 15px; font-size: 0.9rem; color: #64748b;">Número de socio: <strong id="modalNumeroSocio">---</strong></p>
-            <button class="close-btn" onclick="closeModal()">Cerrar</button>
+            <p style="margin-top: 15px; font-size: 0.9rem; color: #94a3b8;">Número de socio: <strong id="modalNumeroSocio">---</strong></p>
+            <button class="modal-close" onclick="closeModal()">¡Entendido!</button>
         </div>
     </div>
 
     <script>
-        const API_URL = 'https://api.base44.com/v1/apps/6911b8e453ca3ac01fb134d6/functions/publicMemberRegistration';
-        const UPLOAD_URL = 'https://api.base44.com/v1/apps/6911b8e453ca3ac01fb134d6/integrations/core/upload-file';
+        // URLs de la API
+        const API_URL = 'https://app.base44.com/api/p/6911b8e453ca3ac01fb134d6/publicMemberRegistration';
+        const UPLOAD_URL = 'https://app.base44.com/api/p/6911b8e453ca3ac01fb134d6/publicFileUpload';
         const LANDING_URL = 'https://manuelbermudo2804-tech.github.io/-club-landing-page-Bustarviejo/';
         
-        // ⚠️ DATOS DEL CLUB - Cambia estos valores por los reales
-        const IBAN = 'ES12 1234 5678 1234 5678 9012';
-        const BIZUM = '600123456';
-        
-        let justificanteSubido = false;
+        // Variables globales
+        let uploadedFileUrl = null;
+        let referrerCode = null;
 
-        // Show copy toast
-        function showCopyToast() {
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            // Leer parámetros de URL
+            const urlParams = new URLSearchParams(window.location.search);
+            referrerCode = urlParams.get('ref');
+            
+            if (referrerCode) {
+                document.getElementById('referralBanner').style.display = 'block';
+            }
+
+            // Actualizar concepto con el nombre
+            document.getElementById('nombre_completo').addEventListener('input', function() {
+                document.getElementById('conceptName').textContent = this.value || 'Tu nombre';
+            });
+
+            // Radio buttons
+            document.querySelectorAll('.radio-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.radio-option').forEach(o => o.classList.remove('selected'));
+                    this.classList.add('selected');
+                    this.querySelector('input').checked = true;
+                });
+            });
+
+            // Upload button
+            document.getElementById('uploadBtn').addEventListener('click', function() {
+                document.getElementById('fileInput').click();
+            });
+
+            // File input change
+            document.getElementById('fileInput').addEventListener('change', handleFileUpload);
+
+            // Form submit
+            document.getElementById('memberForm').addEventListener('submit', handleSubmit);
+        });
+
+        // Copiar IBAN
+        function copyIBAN() {
+            const iban = 'ES12 1234 5678 1234 5678 9012';
+            navigator.clipboard.writeText(iban.replace(/\s/g, '')).then(() => {
+                showToast();
+            });
+        }
+
+        // Mostrar toast
+        function showToast() {
             const toast = document.getElementById('copyToast');
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 2000);
         }
 
-        // Copy IBAN
-        function copyIBAN() {
-            navigator.clipboard.writeText(IBAN.replace(/\s/g, ''));
-            showCopyToast();
-        }
-
-        // Copy Bizum
-        function copyBizum() {
-            navigator.clipboard.writeText(BIZUM);
-            showCopyToast();
-        }
-
-        // Check for referral code in URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const refCode = urlParams.get('ref');
-        if (refCode) {
-            document.getElementById('referidoCodigo').value = refCode;
-            document.getElementById('referralBanner').style.display = 'block';
-        }
-
-        // Share function
-        function shareLink() {
-            const message = `¡Hazte socio del CD Bustarviejo! ⚽🏀
-
-Por solo 25€/temporada ayudas a los jóvenes deportistas del club.
-
-👉 Regístrate aquí: ${LANDING_URL}
-
-¡Gracias por tu apoyo! 💪`;
-            
+        // Compartir por WhatsApp
+        function shareWhatsApp() {
+            const message = `¡Hazte socio del CD Bustarviejo! ⚽🏀\n\nPor solo 25€/temporada ayudas a los jóvenes deportistas del club.\n\n👉 Regístrate aquí: ${LANDING_URL}\n\n¡Gracias por tu apoyo! 💪`;
             window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
         }
 
-        // Close modal
-        function closeModal() {
-            document.getElementById('successModal').classList.remove('show');
-        }
-
-        // Radio option styling
-        document.querySelectorAll('.radio-option').forEach(option => {
-            option.addEventListener('click', function() {
-                const group = this.closest('.radio-group');
-                group.querySelectorAll('.radio-option').forEach(o => o.classList.remove('selected'));
-                this.classList.add('selected');
-                this.querySelector('input').checked = true;
-            });
-        });
-
-        // Update concept name as user types
-        document.getElementById('nombre_completo').addEventListener('input', function() {
-            document.getElementById('conceptName').textContent = this.value || 'Tu nombre';
-        });
-
-        // File upload handling
-        document.getElementById('fileInput').addEventListener('change', async function(e) {
+        // Subir archivo
+        async function handleFileUpload(e) {
             const file = e.target.files[0];
             if (!file) return;
 
             const uploadBtn = document.getElementById('uploadBtn');
-            const uploadSection = document.getElementById('uploadSection');
             const uploadPreview = document.getElementById('uploadPreview');
+            const uploadError = document.getElementById('uploadError');
             const submitBtn = document.getElementById('submitBtn');
             const submitHint = document.getElementById('submitHint');
 
+            // Resetear estados
+            uploadPreview.style.display = 'none';
+            uploadError.style.display = 'none';
             uploadBtn.disabled = true;
-            uploadBtn.innerHTML = '<span class="loading"></span> Subiendo...';
+            uploadBtn.textContent = '⏳ Subiendo...';
 
             try {
                 const formData = new FormData();
@@ -397,91 +693,94 @@ Por solo 25€/temporada ayudas a los jóvenes deportistas del club.
                 });
 
                 const result = await response.json();
-                
-                if (result.file_url) {
-                    document.getElementById('justificanteUrl').value = result.file_url;
-                    justificanteSubido = true;
-                    
-                    // Update UI
-                    uploadSection.classList.add('uploaded');
-                    uploadBtn.innerHTML = '✅ Justificante subido';
-                    uploadBtn.classList.add('success');
-                    uploadPreview.classList.add('show');
-                    
-                    // Enable submit button
+
+                if (result.success && result.file_url) {
+                    uploadedFileUrl = result.file_url;
+                    uploadPreview.style.display = 'block';
+                    uploadBtn.textContent = '✅ Archivo subido';
                     submitBtn.disabled = false;
                     submitHint.style.display = 'none';
                 } else {
-                    throw new Error('Error al subir archivo');
+                    throw new Error(result.error || 'Error al subir');
                 }
             } catch (error) {
-                console.error('Upload error:', error);
-                alert('❌ Error al subir el archivo. Por favor, inténtalo de nuevo.');
-                uploadBtn.disabled = false;
-                uploadBtn.innerHTML = '📎 Seleccionar archivo';
+                console.error('Error uploading file:', error);
+                uploadError.style.display = 'block';
+                uploadBtn.textContent = '📎 Seleccionar archivo';
+                uploadedFileUrl = null;
             }
-        });
 
-        // Form submission
-        document.getElementById('memberForm').addEventListener('submit', async function(e) {
+            uploadBtn.disabled = false;
+        }
+
+        // Enviar formulario
+        async function handleSubmit(e) {
             e.preventDefault();
-            
-            if (!justificanteSubido) {
-                alert('⚠️ Por favor, sube el justificante de pago antes de enviar.');
+
+            if (!uploadedFileUrl) {
+                alert('Por favor, sube el justificante de pago');
                 return;
             }
-            
-            const btn = document.getElementById('submitBtn');
-            const errorDiv = document.getElementById('errorMessage');
-            
-            btn.disabled = true;
-            btn.innerHTML = '<span class="loading"></span> Enviando...';
-            errorDiv.classList.remove('show');
 
-            const formData = new FormData(this);
-            const data = {
-                tipo_inscripcion: formData.get('tipo_inscripcion'),
-                nombre_completo: formData.get('nombre_completo'),
-                dni: formData.get('dni'),
-                telefono: formData.get('telefono'),
-                email: formData.get('email'),
-                direccion: formData.get('direccion'),
-                municipio: formData.get('municipio'),
+            const submitBtn = document.getElementById('submitBtn');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Enviando...';
+            errorMessage.style.display = 'none';
+
+            const formData = {
+                tipo_inscripcion: document.querySelector('input[name="tipo_inscripcion"]:checked').value,
+                nombre_completo: document.getElementById('nombre_completo').value.trim(),
+                dni: document.getElementById('dni').value.trim(),
+                telefono: document.getElementById('telefono').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                direccion: document.getElementById('direccion').value.trim(),
+                municipio: document.getElementById('municipio').value.trim(),
                 metodo_pago: 'Transferencia',
-                justificante_url: formData.get('justificante_url'),
-                es_segundo_progenitor: false,
-                referido_por: formData.get('referido_codigo') ? 'REF:' + formData.get('referido_codigo') : ''
+                justificante_url: uploadedFileUrl,
+                es_segundo_progenitor: false
             };
+
+            // Añadir referido si existe
+            if (referrerCode) {
+                formData.referido_por = `REF:${referrerCode}`;
+            }
 
             try {
                 const response = await fetch(API_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
                 });
 
                 const result = await response.json();
 
                 if (result.success) {
-                    // Show modal
-                    document.getElementById('modalNumeroSocio').textContent = result.numero_socio || 'Asignado';
-                    document.getElementById('successModal').classList.add('show');
-                    
-                    // Update inline message
-                    document.getElementById('formContent').classList.add('hidden');
-                    document.getElementById('successMessage').classList.add('show');
-                    document.getElementById('numeroSocio').textContent = result.numero_socio || 'Asignado';
+                    // Mostrar éxito
+                    document.getElementById('formContent').style.display = 'none';
+                    document.getElementById('successMessage').style.display = 'block';
+                    document.getElementById('numeroSocio').textContent = result.numero_socio;
+                    document.getElementById('modalNumeroSocio').textContent = result.numero_socio;
+                    document.getElementById('successModal').style.display = 'flex';
                 } else {
-                    throw new Error(result.error || 'Error al procesar la solicitud');
+                    throw new Error(result.error || 'Error al enviar');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                errorDiv.textContent = '❌ ' + (error.message || 'Error al enviar. Por favor, inténtalo de nuevo.');
-                errorDiv.classList.add('show');
-                btn.disabled = false;
-                btn.innerHTML = '🎉 Enviar Solicitud';
+                errorMessage.textContent = '❌ Error: ' + error.message;
+                errorMessage.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = '🎉 Enviar Solicitud';
             }
-        });
+        }
+
+        // Cerrar modal
+        function closeModal() {
+            document.getElementById('successModal').style.display = 'none';
+        }
     </script>
 </body>
 </html>
