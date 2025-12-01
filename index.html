@@ -139,6 +139,39 @@
             color: #166534;
             margin: 0;
         }
+        .personal-link-warning {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #f59e0b;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .personal-link-warning p {
+            color: #92400e;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        .privacy-notice {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .privacy-notice p {
+            color: #64748b;
+            font-size: 0.8rem;
+            margin: 0;
+            line-height: 1.5;
+        }
+        .privacy-notice a {
+            color: #f97316;
+            text-decoration: none;
+        }
+        .privacy-notice a:hover {
+            text-decoration: underline;
+        }
         .form-group {
             margin-bottom: 20px;
         }
@@ -335,6 +368,15 @@
             color: #f97316;
             text-decoration: none;
         }
+        .footer .privacy-links {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+        .footer .privacy-links p {
+            font-size: 0.75rem;
+            line-height: 1.6;
+        }
         .copy-toast {
             position: fixed;
             bottom: 20px;
@@ -455,6 +497,11 @@
             <div class="form-body">
                 <div class="error-message" id="errorMessage"></div>
                 
+                <!-- Personal Link Warning -->
+                <div class="personal-link-warning" id="personalLinkWarning">
+                    <p>⚠️ <strong>Aviso importante:</strong> Si alguien te ha reenviado este enlace (no te lo envió directamente la persona que te invitó), el programa de premios por referidos <strong>no aplicará</strong>. Cada enlace es personal e intransferible.</p>
+                </div>
+                
                 <!-- Referral Banner -->
                 <div class="referral-banner" id="referralBanner" style="display: none;">
                     <p>🎁 <strong>¡Te han invitado!</strong> Al registrarte, quien te invitó recibirá un premio.</p>
@@ -551,6 +598,13 @@
                             </div>
                         </div>
 
+                        <!-- Privacy Notice -->
+                        <div class="privacy-notice">
+                            <p>
+                                🔒 <strong>Protección de Datos (RGPD):</strong> Al enviar este formulario, consientes el tratamiento de tus datos personales por el CD Bustarviejo para la gestión de tu membresía como socio del club. Tus datos serán tratados de forma confidencial y no serán cedidos a terceros sin tu consentimiento. Puedes ejercer tus derechos de acceso, rectificación, cancelación y oposición enviando un email a <a href__="mailto:cdbustarviejo@gmail.com">cdbustarviejo@gmail.com</a>.
+                            </p>
+                        </div>
+
                         <!-- Submit -->
                         <button type="submit" class="submit-btn" id="submitBtn" disabled>
                             🎉 Enviar Solicitud
@@ -584,6 +638,11 @@
             <p>📧 <a href__="mailto:cdbustarviejo@gmail.com">cdbustarviejo@gmail.com</a></p>
             <p style="margin-top: 10px;">📍 Bustarviejo, Madrid</p>
             <p style="margin-top: 15px; font-size: 0.85rem;">© CD Bustarviejo - Desde 1980</p>
+            <div class="privacy-links">
+                <p>🔒 Tus datos están protegidos conforme al Reglamento General de Protección de Datos (RGPD).</p>
+                <p>El CD Bustarviejo es el responsable del tratamiento de tus datos personales.</p>
+                <p>Para cualquier consulta sobre privacidad: <a href__="mailto:cdbustarviejo@gmail.com">cdbustarviejo@gmail.com</a></p>
+            </div>
         </div>
     </div>
 
@@ -617,6 +676,8 @@
             
             if (referrerCode) {
                 document.getElementById('referralBanner').style.display = 'block';
+                // Ocultar el aviso genérico si hay un referrer válido
+                document.getElementById('personalLinkWarning').style.display = 'none';
             }
 
             // Actualizar concepto con el nombre
@@ -662,7 +723,17 @@
 
         // Compartir por WhatsApp
         function shareWhatsApp() {
-            const message = `¡Hazte socio del CD Bustarviejo! ⚽🏀\n\nPor solo 25€/temporada ayudas a los jóvenes deportistas del club.\n\n👉 Regístrate aquí: ${LANDING_URL}\n\n¡Gracias por tu apoyo! 💪`;
+            const message = `¡Hazte socio del CD Bustarviejo! ⚽🏀
+
+Por solo 25€/temporada ayudas a más de 200 niños y niñas a disfrutar del deporte.
+
+👉 Regístrate aquí: ${LANDING_URL}
+
+⚠️ IMPORTANTE: Este enlace es solo para ti. Si lo reenvías a otra persona, los premios del programa de referidos no contarán.
+
+🔒 Tus datos están protegidos según el RGPD.
+
+¡Gracias por tu apoyo! 💪`;
             window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
         }
 
