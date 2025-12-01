@@ -590,10 +590,10 @@
                                     📎 Seleccionar archivo
                                 </button>
                                 <div class="upload-preview" id="uploadPreview">
-                                    <span>✅ Justificante subido correctamente</span>
+                                    <span>✅ Justificante preparado correctamente</span>
                                 </div>
                                 <div class="upload-error" id="uploadError">
-                                    <span>❌ Error al subir el archivo. Inténtalo de nuevo.</span>
+                                    <span>❌ Error al procesar el archivo. Inténtalo de nuevo.</span>
                                 </div>
                             </div>
                         </div>
@@ -661,11 +661,10 @@
     <script>
         // URLs de la API
         const API_URL = 'https://app.base44.com/api/p/6911b8e453ca3ac01fb134d6/publicMemberRegistration';
-        const UPLOAD_URL = 'https://app.base44.com/api/p/6911b8e453ca3ac01fb134d6/publicFileUpload';
         const LANDING_URL = 'https://manuelbermudo2804-tech.github.io/-club-landing-page-Bustarviejo/';
         
         // Variables globales
-        let uploadedFileUrl = null;
+        let uploadedFileData = null;
         let referrerCode = null;
 
         // Inicialización
@@ -676,7 +675,6 @@
             
             if (referrerCode) {
                 document.getElementById('referralBanner').style.display = 'block';
-                // Ocultar el aviso genérico si hay un referrer válido
                 document.getElementById('personalLinkWarning').style.display = 'none';
             }
 
@@ -699,8 +697,8 @@
                 document.getElementById('fileInput').click();
             });
 
-            // File input change
-            document.getElementById('fileInput').addEventListener('change', handleFileUpload);
+            // File input change - procesar localmente como base64
+            document.getElementById('fileInput').addEventListener('change', handleFileSelect);
 
             // Form submit
             document.getElementById('memberForm').addEventListener('submit', handleSubmit);
@@ -737,8 +735,8 @@ Por solo 25€/temporada ayudas a más de 200 niños y niñas a disfrutar del de
             window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
         }
 
-        // Subir archivo
-        async function handleFileUpload(e) {
+        // Procesar archivo localmente como base64
+        function handleFileSelect(e) {
             const file = e.target.files[0];
             if (!file) return;
 
@@ -748,47 +746,52 @@ Por solo 25€/temporada ayudas a más de 200 niños y niñas a disfrutar del de
             const submitBtn = document.getElementById('submitBtn');
             const submitHint = document.getElementById('submitHint');
 
+            // Validar tamaño (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                uploadError.innerHTML = '<span>❌ El archivo es demasiado grande. Máximo 5MB.</span>';
+                uploadError.style.display = 'block';
+                return;
+            }
+
             // Resetear estados
             uploadPreview.style.display = 'none';
             uploadError.style.display = 'none';
             uploadBtn.disabled = true;
-            uploadBtn.textContent = '⏳ Subiendo...';
+            uploadBtn.textContent = '⏳ Procesando...';
 
-            try {
-                const formData = new FormData();
-                formData.append('file', file);
+            const reader = new FileReader();
+            
+            reader.onload = function(event) {
+                // Guardar el base64 del archivo
+                uploadedFileData = {
+                    base64: event.target.result,
+                    name: file.name,
+                    type: file.type,
+                    size: file.size
+                };
+                
+                uploadPreview.style.display = 'block';
+                uploadBtn.textContent = '✅ ' + file.name;
+                submitBtn.disabled = false;
+                submitHint.style.display = 'none';
+                uploadBtn.disabled = false;
+            };
 
-                const response = await fetch(UPLOAD_URL, {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const result = await response.json();
-
-                if (result.success && result.file_url) {
-                    uploadedFileUrl = result.file_url;
-                    uploadPreview.style.display = 'block';
-                    uploadBtn.textContent = '✅ Archivo subido';
-                    submitBtn.disabled = false;
-                    submitHint.style.display = 'none';
-                } else {
-                    throw new Error(result.error || 'Error al subir');
-                }
-            } catch (error) {
-                console.error('Error uploading file:', error);
+            reader.onerror = function() {
                 uploadError.style.display = 'block';
                 uploadBtn.textContent = '📎 Seleccionar archivo';
-                uploadedFileUrl = null;
-            }
+                uploadBtn.disabled = false;
+                uploadedFileData = null;
+            };
 
-            uploadBtn.disabled = false;
+            reader.readAsDataURL(file);
         }
 
         // Enviar formulario
         async function handleSubmit(e) {
             e.preventDefault();
 
-            if (!uploadedFileUrl) {
+            if (!uploadedFileData) {
                 alert('Por favor, sube el justificante de pago');
                 return;
             }
@@ -809,7 +812,10 @@ Por solo 25€/temporada ayudas a más de 200 niños y niñas a disfrutar del de
                 direccion: document.getElementById('direccion').value.trim(),
                 municipio: document.getElementById('municipio').value.trim(),
                 metodo_pago: 'Transferencia',
-                justificante_url: uploadedFileUrl,
+                // Enviar el archivo como base64 directamente
+                justificante_base64: uploadedFileData.base64,
+                justificante_nombre: uploadedFileData.name,
+                justificante_tipo: uploadedFileData.type,
                 es_segundo_progenitor: false
             };
 
